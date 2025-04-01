@@ -372,6 +372,7 @@ public class Router extends Device
 		System.out.println("Not destined for router confirmed");
 
 		// Forwarding logic
+		System.out.println(routeTable.toString());
 		RouteEntry bestMatch = routeTable.lookup(ipPacket.getDestinationAddress());
 		if (bestMatch == null) {
 			return;
