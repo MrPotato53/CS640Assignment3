@@ -325,7 +325,7 @@ public class Router extends Device
 		if (etherPacket.getEtherType() != Ethernet.TYPE_IPv4) {
 			return;
 		}
-		// System.out.println("Confirmed IPv4 packet");
+		System.out.println("Confirmed IPv4 packet");
 
 		// Verify the checksum
 		IPv4 ipPacket = (IPv4) etherPacket.getPayload();
@@ -334,10 +334,10 @@ public class Router extends Device
 		byte[] serialized = ipPacket.serialize();
 		ipPacket.deserialize(serialized, 0, serialized.length);
 		if (savedChecksum != ipPacket.getChecksum()) {
-			// System.out.println("Checksum failed");
+			System.out.println("Checksum failed");
 			return;
 		}
-		// System.out.println("Checksum verified");
+		System.out.println("Checksum verified");
 
 		// Handle RIP packet if it's a UDP packet on RIP port
 		if (ipPacket.getProtocol() == IPv4.PROTOCOL_UDP) {
@@ -361,7 +361,7 @@ public class Router extends Device
 		ipPacket.resetChecksum();
 		serialized = ipPacket.serialize();
 		ipPacket.deserialize(serialized, 0, serialized.length);
-		// System.out.println("TTL decremented");
+		System.out.println("TTL decremented");
 
 		// Check if the packet is destined for one of the router's interfaces
 		for (Iface iface : interfaces.values()) {
@@ -369,14 +369,14 @@ public class Router extends Device
 				return;
 			}
 		}
-		// System.out.println("Not destined for router confirmed");
+		System.out.println("Not destined for router confirmed");
 
 		// Forwarding logic
 		RouteEntry bestMatch = routeTable.lookup(ipPacket.getDestinationAddress());
 		if (bestMatch == null) {
 			return;
 		}
-		// System.out.println("Best match found: " + bestMatch.toString());
+		System.out.println("Best match found: " + bestMatch.toString());
 
 		// Update the IP header with new mac addresses
 		// System.out.println("Looking up " + IPv4.fromIPv4Address(bestMatch.getGatewayAddress()));
@@ -395,7 +395,7 @@ public class Router extends Device
 		MACAddress newSrcMac = bestMatch.getInterface().getMacAddress();
 		etherPacket.setDestinationMACAddress(newDstMac.toBytes());
 		etherPacket.setSourceMACAddress(newSrcMac.toBytes());
-		// System.out.println("Updated MAC addresses in etherPacket header: dst " + newDstMac.toString() + " src " + newSrcMac.toString());
+		System.out.println("Updated MAC addresses in etherPacket header: dst " + newDstMac.toString() + " src " + newSrcMac.toString());
 
 		// Send the packet
 		sendPacket(etherPacket, bestMatch.getInterface());
