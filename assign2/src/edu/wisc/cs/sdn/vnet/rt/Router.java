@@ -110,7 +110,7 @@ public class Router extends Device
 		// Add directly connected routes to the RIP routing table
 		for (Iface iface : interfaces.values()) {
 			int network = iface.getIpAddress() & iface.getSubnetMask();
-			ripRoutes.put(network, new RIPRouteInfo(System.currentTimeMillis(),1,network,iface.getSubnetMask(),0, iface));
+			ripRoutes.put(network, new RIPRouteInfo(System.currentTimeMillis(),0,network,iface.getSubnetMask(),0, iface));
 		}
 
 		// Start timer for periodic RIP updates
@@ -238,7 +238,7 @@ public class Router extends Device
 		
 		// Remove expired routes
 		for (RIPRouteInfo entry : expiredRoutes) {
-			if(entry.nextHopAddress != 0) {
+			if(entry.distance != 0) {
 				// Remove from routing table
 				routeTable.remove(entry.destinationAddress, entry.subnetMask);
 				ripRoutes.remove(entry.destinationAddress);
