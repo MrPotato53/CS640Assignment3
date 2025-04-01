@@ -344,6 +344,7 @@ public class Router extends Device
 			UDP udpPacket = (UDP) ipPacket.getPayload();
 			if (udpPacket.getDestinationPort() == RIP_PORT) {
 				// This is a RIP packet
+				System.out.println("RIP Packet");
 				RIPv2 ripPacket = (RIPv2) udpPacket.getPayload();
 				handleRIPPacket(ripPacket, inIface, ipPacket.getSourceAddress(), 
 						etherPacket.getSourceMACAddress());
