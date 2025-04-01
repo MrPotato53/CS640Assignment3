@@ -111,6 +111,7 @@ public class Router extends Device
 		for (Iface iface : interfaces.values()) {
 			int network = iface.getIpAddress() & iface.getSubnetMask();
 			ripRoutes.put(network, new RIPRouteInfo(System.currentTimeMillis(),0,network,iface.getSubnetMask(),0, iface));
+			routeTable.insert(network, iface.getIpAddress(), iface.getSubnetMask(), iface);
 		}
 
 		// Start timer for periodic RIP updates
