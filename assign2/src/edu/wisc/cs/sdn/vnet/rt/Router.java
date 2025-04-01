@@ -383,8 +383,12 @@ public class Router extends Device
 		if(gatewayAddress == 0) {
 			gatewayAddress = ipPacket.getDestinationAddress();
 		}
+
+		System.out.println("Routing to IP: " + IPv4.fromIPv4Address(ipPacket.getDestinationAddress()));
+		System.out.println("Using gateway: " + IPv4.fromIPv4Address(gatewayAddress));
+
 		ArpEntry arpEntry = arpCache.lookup(gatewayAddress);
-		// System.out.println("Found arp entry" + arpEntry.toString());
+		System.out.println("Found arp entry" + arpEntry.toString());
 
 		MACAddress newDstMac = arpEntry.getMac();
 		MACAddress newSrcMac = bestMatch.getInterface().getMacAddress();
@@ -394,7 +398,7 @@ public class Router extends Device
 
 		// Send the packet
 		sendPacket(etherPacket, bestMatch.getInterface());
-		// System.out.println("Packet sent on interface " + bestMatch.getInterface().getName());
+		System.out.println("Packet sent on interface " + bestMatch.getInterface().getName());
 		/********************************************************************/
 	}
 }
